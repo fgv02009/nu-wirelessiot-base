@@ -19,7 +19,7 @@
 
 // Pin configurations
 #include "nrf52840dk.h"
-
+void resetGroups(void);
 int main(void) {
   // Initialize.
   nrf_gpio_cfg_output(LED1);
@@ -45,7 +45,7 @@ int main(void) {
   uint32_t i = 0;
   //Enter main loop.
   while (1) {
-    if(nrf_gpio_pin_read(BUTTON1)){
+    if(!nrf_gpio_pin_read(BUTTON1)){
       resetGroups();
     } else {
       nrf_gpio_pin_toggle(LED1);
@@ -63,7 +63,7 @@ int main(void) {
 }
 
 void resetGroups(){
-  printf("button1 clicked -- resetting leds");
+  printf("button1 clicked -- resetting leds\n");
   uint32_t group1[2];
   uint32_t group2[2];
   uint32_t all_leds[4] = {LED1, LED2, LED3, LED4};
