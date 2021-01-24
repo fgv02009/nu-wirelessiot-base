@@ -32,8 +32,33 @@ void ble_evt_adv_report(ble_evt_t const* p_ble_evt) {
   uint8_t const* ble_addr = adv_report->peer_addr.addr; // array of 6 bytes of the address
   uint8_t* adv_buf = adv_report->data.p_data; // array of up to 31 bytes of advertisement payload data
   uint16_t adv_len = adv_report->data.len; // length of advertisement payload data
-
-  printf("Received an advertisement!\n");
+  
+  uint8_t i = 0;
+  if(ble_addr[5] == 0xc0 && ble_addr[4] == 0x98 && ble_addr[3] == 0xe5){ //filters for just the other advertiser
+	  printf("Received an advertisement! -- address: %x %x %x %x %x %x\n", ble_addr[0], ble_addr[1], ble_addr[2], ble_addr[3], ble_addr[4], ble_addr[5]);
+	  if(i<2){
+		  printf("LENGTH = %d\n", adv_len); //this is total can then break down further
+		  printf("adv_buf:\n");
+		  uint8_t j = 0;
+		  while(j < 32)
+		  {
+			uint8_t len = adv_buf[j];
+			uint8_t type = adv_buf[j+1];
+			uint8_t *value = adv_buf[j+2];
+		        j += (len + 1);	
+		  	printf("length: %d\n", len);
+		        printf("type: %d\n", type);
+			uint8_t k = 0;
+			printf("value: ");
+			while(k < (len-1)){
+				printf("%x ", *(value + k));
+				k++;
+			}
+			printf("\n");
+		  }
+	  i++; 
+	  }
+  }
 }
 
 
