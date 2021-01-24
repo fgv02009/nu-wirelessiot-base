@@ -37,22 +37,26 @@ void ble_evt_adv_report(ble_evt_t const* p_ble_evt) {
   if(ble_addr[5] == 0xc0 && ble_addr[4] == 0x98 && ble_addr[3] == 0xe5){ //filters for just the other advertiser
 	  printf("Received an advertisement! -- address: %x %x %x %x %x %x\n", ble_addr[0], ble_addr[1], ble_addr[2], ble_addr[3], ble_addr[4], ble_addr[5]);
 	  if(i<2){
-		  printf("LENGTH = %d\n", adv_len); //this is total can then break down further
-		  printf("adv_buf:\n");
+		  printf("LENGTH = %d\n", adv_len);
 		  uint8_t j = 0;
-		  while(j < 32)
+		  while(j < adv_len)
 		  {
 			uint8_t len = adv_buf[j];
 			uint8_t type = adv_buf[j+1];
-			uint8_t *value = adv_buf[j+2];
+			uint8_t *value = &adv_buf[j+2];
 		        j += (len + 1);	
 		  	printf("length: %d\n", len);
 		        printf("type: %d\n", type);
 			uint8_t k = 0;
 			printf("value: ");
 			while(k < (len-1)){
-				printf("%x ", *(value + k));
+				if(type == 9){
+					printf("%c ", *value);
+				} else {
+					printf("%x ", *value);
+				}
 				k++;
+				value++;
 			}
 			printf("\n");
 		  }
