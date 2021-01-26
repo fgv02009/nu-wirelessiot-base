@@ -66,9 +66,9 @@ void ble_evt_adv_report(ble_evt_t const* p_ble_evt) {
   //if(counter<100){
   	  
   if(ble_addr[5] == 0xc0 && ble_addr[4] == 0x98 && ble_addr[3] == 0xe5){ //filters for just the other advertiser
-  	  printf("--------------------------------------\n");
-	  printf("Received an advertisement! -- address: %x %x %x %x %x %x\n", ble_addr[0], ble_addr[1], ble_addr[2], ble_addr[3], ble_addr[4], ble_addr[5]);
-	  printf("LENGTH = %d\n", adv_len);
+  	  //printf("\n--------------------------------------\n");
+	  //printf("Received an advertisement! -- address: %x %x %x %x %x %x\n", ble_addr[0], ble_addr[1], ble_addr[2], ble_addr[3], ble_addr[4], ble_addr[5]);
+	  //printf("LENGTH = %d\n", adv_len);
 	  uint8_t j = 0;
 	  while(j < adv_len)
 	  {
@@ -76,22 +76,38 @@ void ble_evt_adv_report(ble_evt_t const* p_ble_evt) {
 		  uint8_t type = adv_buf[j+1];
 		  uint8_t *value = &adv_buf[j+2];
 		  j += (len + 1);	
-		  printf("length: %d\n", len);
-		  printf("type: %d\n", type);
+		 // printf("length: %d\n", len);
+		 // printf("type: %d\n", type);
 	          uint8_t k = 0;
-	          printf("value: ");
-		  while(k < (len-1)){
-			  if(type == 9 || type == 28){
-				  printf("%c ", *value);
-			  } else {
-				  printf("%x ", *value);
+	         // printf("value: ");
+		  if(type == 255){
+			  //printf("manufacturere: %x %x \n", *value, *++value);
+			  //use this to inc when print statement above is uncommented: value++;
+			  value += 2;
+			  k += 2;
+			  while(k < (len-3)){
+			  	//printf("abt to pring hex os start of string: %x\n", *value);
+				//unsigned char arr[5] = {0xF0, 0x9F, 0x8C, 0x91, 0x00};
+				
+				printf("%s\r",value);
+				//printf("%s\n", (char*)arr);
+				k= len;
+				value++;
 			  }
-			  k++;
-			  value++;
-		  }
-		  printf("\n");
+		  } else {
+			  while(k < (len-1)){
+				  if(type == 9 || type == 28){
+				//	  printf("%c ", *value);
+				  }
+				  else{
+				//	  printf("%x ", *value);
+				  }
+				  k++;
+			  	  value++;
+			  }
+		  	  //printf("\n");
+		  } 
 	  }
-//	  counter++; 
   }
 }
 
