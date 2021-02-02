@@ -42,8 +42,8 @@ static simple_ble_char_t led_state_char = {.uuid16 = 0x1089};
 static bool led_state = false;
 static simple_ble_char_t notify_state_char = {.uuid16 = 0x108A};
 static bool notify_state = false;
-static simple_ble_char_t button_response_char = {.uuid16 = 0x108B};
-static bool button_pressed_state = false;
+static simple_ble_char_t print_state_char = {.uuid16 = 0x108B};
+static char print_char = 'a';
 /*******************************************************************************
  *   State for this application
  ******************************************************************************/
@@ -64,6 +64,11 @@ void ble_evt_write(ble_evt_t const* p_ble_evt) {
       printf("Turning off LED!\n");
       nrf_gpio_pin_set(LED1);
     }
+  }
+  if (simple_ble_is_char_event(p_ble_evt, &print_state_char)) {
+
+    //Use char written to print
+    printf("The char written was %c\n", print_char);
   }
 }
 
@@ -90,7 +95,9 @@ int main(void) {
   simple_ble_add_characteristic(1,0,1,0,
       sizeof(notify_state), (uint8_t*)&notify_state,
       &floris_service, &notify_state_char); //read and notify but dont write
-
+  simple_ble_add_characteristic(1, 1, 0, 0,
+      sizeof(print_char), (uint8_t*)&print_char,
+      &floris_service, &print_state_char);
   // Start Advertising
   simple_ble_adv_only_name();
 
