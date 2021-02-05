@@ -28,15 +28,20 @@ static simple_ble_service_t environmental_sensing_service = {{
               0x00,0x10,0x00,0x00,0x1A,0x18,0x00,0x00}
 }};
 static simple_ble_char_t temperature_char = {.uuid16 = 0x2A6E};
-static int16_t temp = 22;
+//temp = 22degrees celcius -- im actually in florida
+static int16_t temp = 0x9808;
 static simple_ble_char_t pressure_char = {.uuid16 = 0x2A6D};
-static uint32_t pressure = 101050;
+//pressure = 101050 Pasclas
+static uint32_t pressure = 0x446b0f00;
 static simple_ble_char_t humidity_char = {.uuid16 = 0x2A6F};
-static uint16_t humidity = 43;
+//humidity = 43%
+static uint16_t humidity = 0xCC10;
 static simple_ble_char_t uv_index_char = {.uuid16 = 0x2A76};
-static uint8_t uv_index = 7;
+//uv index = 5
+static uint8_t uv_index = 5;
 static simple_ble_char_t true_wind_char = {.uuid16 = 0x2A70};
-static uint16_t true_wind = 9;
+//true wind = 8mph = 3.58mps
+static uint16_t true_wind = 0x6601;
 
 
 /*******************************************************************************
